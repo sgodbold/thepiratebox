@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  url: MyText
+  upload: 1.5
+  download: 1.5
+
+two:
+  url: MyText
+  upload: 1.5
+  download: 1.5

@@ -1,0 +1,2 @@
+module MagnetsHelper
+end

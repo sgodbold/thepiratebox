@@ -1,0 +1,96 @@
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">ThePirateBox</a>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-xs-8 col-xs-offset-2">
+    <% if !flash[:notice].blank? %>
+      <div class="alert alert-info">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+    <% if !flash[:error].blank? %>
+      <div class="alert alert-info">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+
+    <!-- Add Section -->
+    <div class="bs-callout bs-callout-info" id="add-section">
+      <div class="row">
+        <div class="col-xs-2 bs-callout-header">
+          <h2>Add:</h2>
+        </div>
+        <div class="col-xs-5 bs-callout-body">
+          <%= form_for @new_magnet, :class=>"form-inline", url: magnets_path do |f| %>
+            <%= f.label :magnet %>
+            <%= f.text_field :url, :class=>"form-control", :id=>"add-input", :style=>"width:100%", :type=>"text", :placeholder=>"Torrent / Magnet URL" %>
+            <span class="input-group-btn">
+              <%= f.submit :class=>"btn btn-success", :value=>"Add" %>
+            </span>
+          <% end %>
+        </div>
+
+        <div class="col-xs-5 bs-callout-body">
+          <%= form_for @new_torrent, html: { multipart: true } do |f| %>
+            <%= f.label :attachment %>
+            <%= f.file_field :attachment %>
+            <%= f.submit "Add", class: "btn btn-success" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Section -->
+    <div class="bs-callout bs-callout-info" id="active-section">
+      <div class="row">
+        <div class="col-xs-2 bs-callout-header">
+          <h2>Active:</h2>
+        </div>
+        <div class="col-xs-10 bs-callout-body">
+
+          <table class="table table-striped torrent-table" id="active-table">
+            <% @torrents.each do |torrent| %>
+              <tr>
+                <td><%= torrent.filename %></td>
+                <td><%= link_to "Download", torrent.attachment_url %></td>
+                <td><%= link_to 'Destroy', torrent_path(torrent), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+              </tr>
+            <% end %>
+            <% @magnets.each do |magnet| %>
+              <tr>
+                <td><%= magnet.download_name %></td>
+                <td><%= link_to "URL", magnet.url %></td>
+                <td><%= link_to 'Destroy', magnet_path(magnet), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+              </tr>
+            <% end %>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- System Section -->
+    <div class="bs-callout bs-callout-info" id="done-section">
+      <div class="row">
+        <div class="col-xs-2 bs-callout-header">
+          <h2>System:</h2>
+        </div>
+        <div class="col-xs-10 bs-callout-body">
+          Disk Usage:
+          <div class="progress">
+            <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%= @disk_percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @disk_percent %>; min-width: 2em">
+              <%= @disk_percent %>
+              [<%= @disk_used %> / <%= @disk_total %>]
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

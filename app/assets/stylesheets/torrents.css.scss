@@ -1,0 +1,66 @@
+// Place all the styles related to the torrents controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+/*
+.navbar {
+  border-width: 0px;
+  position: relative;
+  min-height: 60px;
+  margin-bottom: 21px;
+  border: 1px solid transparent;
+}
+
+.navbar-default {
+  background-color: #2C3E50;
+  border-color: transparent;
+}
+
+.navbar-static-top {
+  border-radius: 0px;
+  z-index: 1000;
+}
+*/
+
+.bs-callout {
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border-top: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-left: 5px solid #eee;
+}
+.bs-callout h4 {
+  margin-top: 0;
+}
+.bs-callout p:last-child {
+  margin-bottom: 0;
+}
+.bs-callout code,
+.bs-callout .highlight {
+  background-color: #fff;
+}
+.bs-callout-header {
+  height: 100%;
+  border-right: 1px solid #eee;
+}
+.bs-callout-body {
+  margin-top: 10px;
+}
+ 
+/* Themes for different contexts */
+.bs-callout-danger {
+  /*background-color: #fcf2f2;*/
+  border-color: #dFb5b4;
+}
+.bs-callout-warning {
+  /*background-color: #fefbed;*/
+  border-color: #f1e7bc;
+}
+.bs-callout-info {
+  /*background-color: #f0f7fd;*/
+  border-color: #d0e3f0;
+} 
+
+.torrent-table {
+  border: 1px solid #d0e3f0;
+}
