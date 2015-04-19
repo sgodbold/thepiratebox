@@ -5,12 +5,16 @@ class WelcomeController < ApplicationController
     @new_torrent = Torrent.new
     @new_magnet = Magnet.new
 
-    # Get percent of disk space used
+    # Disk space used
     disk = %x[df -h | sed -n '2p']
     disk = disk.split(' ')
-    puts "disk = #{disk}"
     @disk_used = disk[2]
     @disk_total = disk[1]
     @disk_percent = disk[4]
+
+    # All torrent data
+    @torrent_data = @transmission_api.all
+    # @transmission_api.destroy(5)
+    puts JSON.pretty_generate(@torrent_data)
   end
 end

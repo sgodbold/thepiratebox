@@ -57,6 +57,7 @@
             <% @torrents.each do |torrent| %>
               <tr>
                 <td><%= torrent.filename %></td>
+                <td>Created: <%= torrent.created_at %></td>
                 <td><%= link_to "Download", torrent.attachment_url %></td>
                 <td><%= link_to 'Destroy', torrent_path(torrent), method: :delete, data: {confirm: 'Are you sure?'} %></td>
               </tr>
@@ -70,6 +71,28 @@
             <% end %>
           </table>
 
+          <table class="table table-striped torrent-table" id="complete-table">
+            <% @torrent_data.each do |torrent| %>
+              <tr>
+                <td width="30%" rowspan="2"><i><%= torrent['name'] %></i></td>
+                <td width="70%" rowspan="2">
+                  <% if torrent['percentDone'] == 1 %>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100%" aria-valuemin="0" aria-valuemax="100" style="width: 100%; min-width: 2em"></div>
+                    </div>
+                  <% else %>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="<%= torrent['percentDone']*100 %>%" aria-valuemin="0" aria-valuemax="100" style="width:<%= torrent['percentDone']*100%>%"></div>
+                    </div>
+                  <% end %>
+                  <span>size: <%= torrent['totalSize'] %></span>
+                  <span>up: <%= torrent['rateUpload'] %></span>
+                  <span>down: <%= torrent['rateDownload'] %></span>
+                </td>
+              </tr>
+            <% end %>
+            <tr></tr> <!-- adjust for rowspan 2 -->
+          </table>
         </div>
       </div>
     </div>
@@ -81,13 +104,14 @@
           <h2>System:</h2>
         </div>
         <div class="col-xs-10 bs-callout-body">
-          Disk Usage:
+          <h4>Disk Usage</h4>
           <div class="progress">
             <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="<%= @disk_percent %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= @disk_percent %>; min-width: 2em">
               <%= @disk_percent %>
               [<%= @disk_used %> / <%= @disk_total %>]
             </div>
           </div>
+
         </div>
       </div>
     </div>

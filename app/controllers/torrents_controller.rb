@@ -5,9 +5,16 @@ class TorrentsController < ApplicationController
 
   def create
     @torrent = Torrent.new(torrent_params)
-    @torrent.filename = File.basename(@torrent.attachment.to_s)
+
+    # Get and filename
+    str = File.basename(@torrent.attachment.to_s, ".torrent")
+    sanitize = sanitize_filename(str)
+    @torrent.filename = sanitize
+
+    puts "pre-save"
+    puts JSON.pretty_generate(@transmission_api.all)
     if @torrent.save
-      redirect_to root_path, notice: "Torrent successfully uploaded."
+      redirect_to root_path
     else
       redirect_to root_path, notice: "ERROR! torrent upload is missing data."
     end
@@ -15,9 +22,18 @@ class TorrentsController < ApplicationController
 
   def destroy
     @torrent = Torrent.find(params[:id])
-    @torrent.destroy
 
-    redirect_to root_path, notice: "Torrent successfully destroyed."
+    # Find matching transmission torrent
+    id = time2torrent(@torrent.created_at)
+    if id < 0
+      redirect_to root_path, notice: "ERROR! can't find torrent"
+    end
+
+    # Remove resource and torrent
+    @torrent.destroy
+    @transmission_api.destroy(id)
+
+    redirect_to root_path
   end
 
   private

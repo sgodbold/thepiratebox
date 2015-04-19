@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 # Custom gems
 gem 'carrierwave'
+gem 'transmission_api'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
