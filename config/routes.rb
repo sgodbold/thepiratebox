@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'welcome/index'
   get 'welcome/info_update'
+  get 'welcome/info_get'
 
   # get 'torrents/index'
 

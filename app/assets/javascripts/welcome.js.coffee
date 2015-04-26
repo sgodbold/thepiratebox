@@ -6,13 +6,11 @@
 window.Application ||= {}
 
 refresh_torrent = (obj) ->
-  console.log("updating torrent: " + obj['id'])
   id = obj['id']
   barId = "download-bar-" + id
   rowId = "row-" + id
 
   # Append new torrent if it doesn't exist
-  console.log("looking for row: " + rowId)
   if $('#'+rowId).length <= 0
     # Copy template row. Adjust tr id, progress bar id, and name
     row_copy = $(".active-torrent-template").clone().prop('id', rowId)
@@ -37,15 +35,17 @@ refresh_torrent = (obj) ->
 
 info_update = (force=false) ->
   $.ajax(url: "/welcome/info_update").done (json) ->
-    # Check for differences in torrents
-    if force==true or JSON.stringify(window.torrent_data) != JSON.stringify(json)
-      console.log("different!")
-      window.torrent_data = json
-      refresh_torrent torrent for torrent in window.torrent_data
+    if json != 0 or force==true
+      console.log("Change!")
+      refresh_torrent torrent for torrent in json
     else
-      console.log("same!")
+      console.log("no change..")
+  return
 
-    return
+info_init = () ->
+  $.ajax(url: "/welcome/info_get").done (json) ->
+    refresh_torrent torrent for torrent in json
+  return
 
 $(document).ready ->
   # Hide html template chunks
@@ -56,9 +56,9 @@ $(document).ready ->
     info_update(true)
 
   # Initialize all data
-  info_update()
+  info_init()
 
   # Update loop
-  setInterval(info_update, 2000)
+  setInterval(info_update, 1000)
 
   return

@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
     # Format input time
     time_str = time_str.to_s.gsub(" UTC", "")
 
-    # torrent_data = @transmission_api.all
     @transmission_api.all.each do |torrent|
       time = Time.at(torrent['addedDate'])
       time = time.to_s.gsub(" +0000", "")
@@ -25,6 +24,33 @@ class ApplicationController < ActionController::Base
 
     end
     return -1
+  end
+
+  # Create a hash signiture of any object. Note: This does not preserve the original object.
+  def createsig(body)
+    Digest::MD5.hexdigest( sigflat body )
+  end
+
+  def sigflat(body)
+    if body.class == Hash
+      arr = []
+      body.each do |key, value|
+        arr << "#{sigflat key}=>#{sigflat value}"
+      end
+      body = arr
+    end
+    if body.class == Array
+      str = ''
+      body.map! do |value|
+        sigflat value
+      end.sort!.each do |value|
+        str << value
+      end
+    end
+    if body.class != String
+      body = body.to_s << body.class.to_s
+    end
+    body
   end
 
   # Cleanup filenames in a standard way. Make changes to uploader too!
