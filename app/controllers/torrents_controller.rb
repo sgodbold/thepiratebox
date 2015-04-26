@@ -11,8 +11,6 @@ class TorrentsController < ApplicationController
     sanitize = sanitize_filename(str)
     @torrent.filename = sanitize
 
-    puts "pre-save"
-    puts JSON.pretty_generate(@transmission_api.all)
     if @torrent.save
       redirect_to root_path
     else

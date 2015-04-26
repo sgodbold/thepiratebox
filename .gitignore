@@ -36,4 +36,5 @@ bower.json
 
 # Custom
 /public/uploads/
+/public/transmission/
 transmissiond.log

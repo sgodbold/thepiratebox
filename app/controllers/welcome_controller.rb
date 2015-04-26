@@ -11,10 +11,15 @@ class WelcomeController < ApplicationController
     @disk_used = disk[2]
     @disk_total = disk[1]
     @disk_percent = disk[4]
+  end
 
-    # All torrent data
-    @torrent_data = @transmission_api.all
-    # @transmission_api.destroy(5)
-    puts JSON.pretty_generate(@torrent_data)
+  def info_update
+    data = @transmission_api.all
+    data.each do |torrent|
+      puts torrent['id']
+      torrent.delete('files')
+    end
+    puts "sending: #{JSON.pretty_generate(data)}"
+    render :json => data
   end
 end
