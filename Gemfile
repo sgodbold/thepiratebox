@@ -1,9 +1,10 @@
 source 'https://rubygems.org'
 
-
 # Custom gems
 gem 'carrierwave'
 gem 'transmission_api'
+gem 'transmission-rpc'
+gem 'retort'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'

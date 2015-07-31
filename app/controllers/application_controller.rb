@@ -1,12 +1,48 @@
 class ApplicationController < ActionController::Base
+  require 'rest-client'
+  require 'active_support/core_ext'
+  require 'transmission-rpc/torrent'
+  require 'transmission-rpc/client'
+
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
+
+  # Transmission Initialize. Code sample from https://github.com/Jarred-Sumner/transmission-rpc/blob/master/lib/transmission-rpc.rb
+  module Transmission
+    mattr_writer :configuration
+
+    def self.configuration
+      @configuration = Transmission::Configuration.new if @configuration.nil?
+      @configuration
+    end
+
+    def self.connected?
+      Transmission::RPC::Client.connected?
+    end
+
+    def self.torrents
+      Transmission::RPC::Torrent.all
+    end
+
+    class Configuration
+      attr_accessor :ip, :port, :path
+
+      def initialize
+        self.ip = "127.0.0.1"
+        self.port = 9091
+        self.path = "transmission/rpc"
+        
+        self
+      end
+    end
+  end
 
   # Transmission interface
   before_filter :set_globals
   def set_globals
     @transmission_api = TransmissionApi::Client.new(:url => "http://127.0.0.1:9091/transmission/rpc")
+    @t = Transmission
   end
 
   # Transmission helpers #
@@ -53,7 +89,7 @@ class ApplicationController < ActionController::Base
     body
   end
 
-  # Cleanup filenames in a standard way. Make changes to uploader too!
+  # Cleanup filenames in a standard way.
   def sanitize_filename(str)
     # Remove surrounding brackets
     sanitize = str.gsub("[", "")

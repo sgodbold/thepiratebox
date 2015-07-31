@@ -19,8 +19,7 @@ class WelcomeController < ApplicationController
     render :json => data
   end
 
-  # Only info when something has changed returns 0 if nothing has changed.
-  # Use this method to frequently ping for new info.
+  # Only return info when something has changed otherwise returns 0. Use this method to frequently ping for new info.
   def info_update
     # Get info from transmission and strip useless data
     data = @transmission_api.all
